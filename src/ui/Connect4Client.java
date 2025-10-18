@@ -43,6 +43,8 @@ public class Connect4Client extends Application {
                     Scanner scanner = new Scanner(System.in);
                     int mode;
 
+                    /** Need to add Gui for selecting gamemode */
+
                     while (true) {
                         try {
                             System.out.print("Select mode (1 for single-player, 2 for multiplayer): ");
