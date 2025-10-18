@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"ui","l":"Connect4Client"},{"p":"core","l":"Connect4ComputerPlayer"},{"p":"ui","l":"Connect4GUI"},{"p":"core","l":"Connect4Logic"},{"p":"core","l":"Connect4Server"},{"p":"ui","l":"Connect4TextConsole"},{"p":"core","l":"MultiplayerSession"},{"p":"core","l":"SinglePlayerSession"}]
