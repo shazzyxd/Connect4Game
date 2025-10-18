@@ -44,6 +44,7 @@ public class Connect4Client extends Application {
                     int mode;
 
                     /* Need to add Gui for selecting gamemode */
+                    // Test
 
                     while (true) {
                         try {
