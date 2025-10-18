@@ -43,7 +43,7 @@ public class Connect4Client extends Application {
                     Scanner scanner = new Scanner(System.in);
                     int mode;
 
-                    /** Need to add Gui for selecting gamemode */
+                    /* Need to add Gui for selecting gamemode */
 
                     while (true) {
                         try {
