@@ -6,6 +6,10 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 
 
 /**
@@ -24,9 +28,12 @@ public class Connect4Client extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter Server IP Address: ");
         try {
             // Connect to the server
-            socket = new Socket("localhost", 8000);
+            String ip = input.nextLine();
+            socket = new Socket(ip, 8000);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
@@ -38,49 +45,59 @@ public class Connect4Client extends Application {
                 String message = (String) serverMessage;
                 System.out.println("Server: " + message);
 
-                if (message.contains("Enter 1 or 2:")) {
-                    // Ask user for game mode
-                    Scanner scanner = new Scanner(System.in);
-                    int mode;
-
-                    /* Need to add Gui for selecting gamemode */
-                    // Test
-
-                    while (true) {
-                        try {
-                            System.out.print("Select mode (1 for single-player, 2 for multiplayer): ");
-                            mode = Integer.parseInt(scanner.nextLine()); // Use nextLine to safely handle non-integer input
-
-                            if (mode == 1 || mode == 2) {
-                                break; // Exit the loop if input is valid
-                            } else {
-                                System.out.println("Invalid choice. Please enter 1 for single-player or 2 for multiplayer.");
-                            }
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid input! Please enter a valid number (1 or 2).");
-                        }
-                    }
-
-
-                    out.writeObject(mode);
-                    out.flush();
-
-                    System.out.println("Client: Sent mode selection to the server.");
-
-                    // Launch GUI after game mode selection
-                    Platform.runLater(() -> {
-                        Connect4GUI gui = new Connect4GUI(socket, out, in);
-                        gui.start(new Stage());
-                    });
-                }
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error during client-server communication:");
             e.printStackTrace();
+            System.out.print("Press any key to exit.");
+
+            try {
+                System.in.read();
+            } catch (IOException ex) {
+
+            }
+            System.exit(1);
         }
+
+        // Simple GUI layout
+        Text prompt = new Text("Select mode:");
+        Button singlePlayer = new Button("Single Player");
+        Button multiPlayer = new Button("Multiplayer");
+
+        // Button actions
+        singlePlayer.setOnAction(e -> sendModeAndLaunchGUI(1, primaryStage));
+        multiPlayer.setOnAction(e -> sendModeAndLaunchGUI(2, primaryStage));
+
+        HBox root = new HBox(10, prompt, singlePlayer, multiPlayer);
+        Scene scene = new Scene(root, 300, 100);
+
+        primaryStage.setTitle("Connect4 Mode Selection");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
+    private void sendModeAndLaunchGUI(int mode, Stage stage) {
+        try {
+            out.writeObject(mode);
+            out.flush();
+            System.out.println("Sent mode: " + mode);
+
+            // Launch Connect4GUI
+            Platform.runLater(() -> {
+                try {
+                    Connect4GUI gui = new Connect4GUI(socket, out, in);
+                    gui.start(new Stage());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+            // Close the mode selection window
+            stage.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
     /**
      * The main method serves as the entry point for the client application. It launches the JavaFX
      * application and initializes the client.

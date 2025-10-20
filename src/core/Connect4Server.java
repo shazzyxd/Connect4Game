@@ -199,6 +199,8 @@ class MultiplayerSession implements Runnable {
 
 
         if (response1.equalsIgnoreCase("Yes") && response2.equalsIgnoreCase("Yes")) {
+            out1.writeObject("New game started");
+            out2.writeObject("New game started");
             new MultiplayerSession(player1, player2, out1, in1, out2, in2).run();
         } else {
             out1.writeObject("Thank you for playing!");
@@ -328,6 +330,8 @@ class SinglePlayerSession implements Runnable {
         out.writeObject("Do you want to play again? Enter 'Yes' or 'No':");
         String response = (String) in.readObject();
         if (response.equalsIgnoreCase("Yes")) {
+            out.writeObject("New game started");
+            out.flush();
             new SinglePlayerSession(player, out, in).run();
         } else {
             out.writeObject("Thank you for playing!");

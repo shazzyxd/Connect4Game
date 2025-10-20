@@ -26,34 +26,18 @@ REM -------------------------
 REM Start the server in a new window
 REM -------------------------
 echo Starting the server...
-start cmd /k "java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out core.Connect4Server"
+start "" java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out core.Connect4Server
 
 REM -------------------------
 REM Launch first client
 REM -------------------------
 echo Launching first client...
-start cmd /k "java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out ui.Connect4Client"
+start "" java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out ui.Connect4Client
 
-REM -------------------------
-REM Ask if user wants multiplayer
-REM -------------------------
-:ASKMULTI
-set /p MULTI=Do you want to launch a second client for multiplayer? (Y/N)
-if /i "%MULTI%"=="Y" (
-    timeout /t 2 /nobreak
-    echo Launching second client...
-    start cmd /k "java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out ui.Connect4Client"
-    goto DONE
-) else if /i "%MULTI%"=="N" (
-    goto DONE
-) else (
-    echo Please enter Y or N.
-    goto ASKMULTI
-)
-
-:DONE
 echo.
 echo Server and first client launched.
-echo If you want single-player, just continue with the first client.
+echo If you want multiplayer, please open a second command prompt,
+echo navigate to the project root, and run the client manually:
+echo java --module-path lib --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=natives -cp out ui.Connect4Client
 pause
 

@@ -186,6 +186,7 @@ public class Connect4GUI extends Application {
                             Platform.runLater(() -> {
                                 statusLabel.setText(message);
                                 if (message.equals("New game started")) {
+                                    resetGame();
                                     Platform.runLater(() -> {
                                         statusLabel.setText("Game restarted! Your turn.");
                                         inputField.setDisable(false); // Re-enable input
@@ -258,7 +259,6 @@ public class Connect4GUI extends Application {
             Optional<ButtonType> result = replayAlert.showAndWait();
             if (result.isPresent() && result.get() == yesButton) {
                 sendReplayResponseToServer("Yes");
-                resetGame();
             } else {
                 sendReplayResponseToServer("No");
             }
