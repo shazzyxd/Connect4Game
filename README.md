@@ -50,7 +50,7 @@ If you want to play multiplayer:
 
 **Either** open a second instance of the client on another machine using `run_game.bat` and closing out the server and one client window
 
-**or** use the pre-opened second client from the automatic launch on the same machine.
+**Or** use the pre-opened second client from the automatic launch on the same machine.
 
 Enter the IP address of the machine running the server (default: localhost for same machine).
 
