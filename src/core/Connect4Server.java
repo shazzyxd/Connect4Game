@@ -40,11 +40,28 @@ public class Connect4Server {
                     System.out.println("Player chose to play against computer.");
                     pool.execute(new SinglePlayerSession(player, out, in));
                 } else {
-                    // Multiplayer game - wait for a second player
-                    System.out.println("Waiting for a second player...");
-                    Socket player2 = serverSocket.accept();
-                    System.out.println("Second player connected.");
-                    pool.execute(new MultiplayerSession(player, player2, out, in, out, in));
+                    while (true) {
+                        // Multiplayer game - wait for a second player
+                        System.out.println("Waiting for a another player...");
+                        Socket player2 = serverSocket.accept();
+                        System.out.println("Second player connected.");
+
+                        ObjectOutputStream out2 = new ObjectOutputStream(player2.getOutputStream());
+                        ObjectInputStream in2 = new ObjectInputStream(player2.getInputStream());
+
+                        out2.writeObject("Would you like to play against another player (2) or the computer (1)? Enter 1 or 2:");
+                        out2.flush();
+
+                        int mode2 = (int) in2.readObject();
+                        if (mode2 == 1) {
+                            System.out.println("Player chose to play against computer.");
+                            pool.execute(new SinglePlayerSession(player2, out2, in2));
+                            continue;
+                        } else {
+                            pool.execute(new MultiplayerSession(player, player2, out, in, out2, in2));
+                            break;
+                        }
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
