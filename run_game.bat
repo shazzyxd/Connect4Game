@@ -34,10 +34,14 @@ REM -------------------------
 echo Launching first client...
 start "" java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out ui.Connect4Client
 
+REM -------------------------
+REM Launch Second client
+REM -------------------------
+echo Launching second client...
+start "" java --module-path %JAVAFX_LIB% --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=%NATIVES_LIB% -cp out ui.Connect4Client
+
 echo.
-echo Server and first client launched.
-echo If you want multiplayer, please open a second command prompt,
-echo navigate to the project root, and run the client manually:
-echo java --module-path lib --add-modules javafx.controls,javafx.fxml,javafx.graphics -Djava.library.path=natives -cp out ui.Connect4Client
+echo Server and two clients launched.
+echo If you want single player, you can close out a window
 pause
 
